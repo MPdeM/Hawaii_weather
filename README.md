@@ -16,8 +16,12 @@ The main requirements are:
 
 ## Data
 The database [hawaii.sqlite](Resources/hawaii.sqlite) consist in two tables measurements and stations. To inspect the database use for example SQLite
-![measurement](Images/measurements.png)
+
+![measurement](Images/measurement.png)
+
+
 ![stations](Images/stations.png)
+
 
 The two tables are also as a csv files [hawaii_measurements.csv](Resources/hawaii_measurements.csv) and [hawaii_stations.csv](Resources/hawaii_stations.csv)
 
