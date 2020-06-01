@@ -155,7 +155,21 @@ def start_end(start, end):
     """Return a JSON list of the minimum, average, and maximum temperatures between the start date and
     the end date."""
 
-    print("between start and end api request: UNDER CONSTRUCTION")
+        # Query all the stations and for the given range of dates. 
+    results = session.query(func.min(Measurement.tobs), func.max(Measurement.tobs),func.avg(Measurement.tobs)).\
+    filter(Measurement.date >= start).filter(Measurement.date <= end).all()
+
+    # Create a dictionary from the row data and append to a list of for the temperature data.
+    begin_end_stats = []
+    
+    for Tmin, Tmax, Tavg in results:
+        begin_end_stats_dict = {}
+        begin_end_stats_dict["Minimum Temp"] = Tmin
+        begin_end_stats_dict["Maximum Temp"] = Tmax
+        begin_end_stats_dict["Average Temp"] = Tavg
+        begin_end_stats.append(begin_end_stats_dict)
+    
+    return jsonify(begin_end_stats)
 
 
 
