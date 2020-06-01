@@ -141,7 +141,7 @@ def start(start= None):
     filter(Measurement.date >= start).all()
     # creta a list of dictionaries
     temp_statistics = []
-    for Tmin, Tmax, Tavg in results:
+    for Tmin, Tmax, Tavg in start_temp:
         temp_stats_dict = {}
         temp_stats_dict["Minimum Temp"] = Tmin
         temp_stats_dict["Maximum Temp"] = Tmax
@@ -149,7 +149,7 @@ def start(start= None):
         temp_statistics.append(temp_stats_dict)
     
     return jsonify(temp_statistics)
-    
+
 @app.route("/api/v1.0/temp/<start>/<end>")
 def start_end(start, end):
     """Return a JSON list of the minimum, average, and maximum temperatures between the start date and
