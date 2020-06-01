@@ -73,25 +73,25 @@ def precipitation():
     last_date= dt.date(last_year, last_month, last_day)
     last_date= dt.date(2017, 8, 23)
     #set beginning of search query
-    date_oneyear = dt.date(last_year, last_month, last_day) - dt.timedelta(days=365)
+    date_oneyear = last_date - dt.timedelta(days=365)
     #retrieve last 12 months of data
     
     precp_results = session.query(Measurement.date, Measurement.prcp).\
         filter(Measurement.date.between(date_oneyear, last_date)).all()
-    # session.close()
+    
     #create a dictionary with the date as the key
-    precip_results_dict = {}
-    for x in precp_results:
-        x = []
-        # precip_results_dict.append(x[0])
-        print(x[1])
-
-    return jsonify(precip_results_dict)
+    precip_results = []
+    for data in precp_results:
+        precip_results_dict = {}
+        precip_results_dict["Date"] = data.date
+        precip_results_dict["Precipitation"] = data.prcp
+        precip_results.append(precip_results_dict)
+        
+    return jsonify(precip_results)
 
 @app.route("/api/v1.0/stations")
 def stations():
     # """Return a list of stations as json"""
-
     #query stations list
     stations_list = session.query(Station).all()
 
@@ -107,24 +107,13 @@ def stations():
         station_list["elevation"] = station.elevation
         stations_list_dict.append(station_list)
     
-    session.close()
     return jsonify(stations_list_dict)
 
 @app.route("/api/v1.0/tobs")
 def tobs():
     """Return a list of temperature observations as json"""
-    print("tobs api")
-    session = Session(engine)
-    #Query temp data for the last year.First we find the last date in the database
-    last_date = session.query(Measurement.date).order_by(Measurement.id.desc()).first()
-    last_datestr = last_date[0]
-    last_year= int(last_datestr.split("-")[0])
-    last_month= int(last_datestr.split("-")[1])
-    last_day= int(last_datestr.split("-")[2])
-    last_date= dt.date(last_year, last_month, last_day)
     #set beginning of search query
-    date_oneyear = dt.date(last_year, last_month, last_day) - dt.timedelta(days=365)
-    
+    date_oneyear = last_date - dt.timedelta(days=365)
     #retrieve last 12 months of data
     temp_data = session.query(Measurement).\
         filter(Measurement.date.between(date_oneyear, last_date)).\
